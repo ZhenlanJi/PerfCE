@@ -14,11 +14,12 @@ Performance Debugging on Databases with Chaos Engineering-Enhanced Causality Ana
 ## Table of Contents
 
 * Setup
-  * TiDB Cluster Setup Tutorial
-  * MySQL on k8s Cluster Setup Tutorial
-* Chaos Engineering
-  * Chaos Engineering on TiDB
-  * Chaos Engineering on MySQL
+  * k8s Cluster Setup
+  * TiDB Setup
+  * MySQL Setup
+* Chaos Engineering (CE)
+  * CE on TiDB
+  * CE on MySQL
 * Utilities
   * Causal Discovery
   * Causal Analysis
