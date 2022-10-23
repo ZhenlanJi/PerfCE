@@ -1,0 +1,618 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: basic-monitor
+  namespace: tidb-cluster
+  uid: 84690fbb-35f6-4c20-bd71-50352e79f64c
+  resourceVersion: '9762292'
+  creationTimestamp: '2022-02-27T17:08:28Z'
+  labels:
+    app.kubernetes.io/app: prometheus
+    app.kubernetes.io/component: monitor
+    app.kubernetes.io/instance: basic
+    app.kubernetes.io/managed-by: tidb-operator
+    app.kubernetes.io/name: tidb-cluster
+  ownerReferences:
+    - apiVersion: pingcap.com/v1alpha1
+      kind: TidbMonitor
+      name: basic
+      uid: 0669f4fc-53b5-48c9-a42f-0083a853a5cd
+      controller: true
+      blockOwnerDeletion: true
+  managedFields:
+    - manager: tidb-controller-manager
+      operation: Update
+      apiVersion: v1
+      time: '2022-04-01T17:49:24Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:data:
+          .: {}
+          f:prometheus.yml: {}
+        f:metadata:
+          f:labels:
+            .: {}
+            f:app.kubernetes.io/app: {}
+            f:app.kubernetes.io/component: {}
+            f:app.kubernetes.io/instance: {}
+            f:app.kubernetes.io/managed-by: {}
+            f:app.kubernetes.io/name: {}
+          f:ownerReferences:
+            .: {}
+            k:{"uid":"0669f4fc-53b5-48c9-a42f-0083a853a5cd"}:
+              .: {}
+              f:apiVersion: {}
+              f:blockOwnerDeletion: {}
+              f:controller: {}
+              f:kind: {}
+              f:name: {}
+              f:uid: {}
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 1s
+      evaluation_interval: 1s
+      external_labels:
+        prometheus_replica: $(NAMESPACE)_$(POD_NAME)
+    scrape_configs:
+    - job_name: tidb-cluster-basic-pd
+      honor_labels: true
+      scrape_interval: 1s
+      scheme: http
+      kubernetes_sd_configs:
+      - api_server: null
+        role: pod
+        namespaces:
+          names:
+          - tidb-cluster
+      tls_config:
+        insecure_skip_verify: true
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        regex: basic
+        action: keep
+      - source_labels: [__meta_kubernetes_namespace]
+        regex: tidb-cluster
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        regex: "true"
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_component]
+        regex: pd
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_name, __meta_kubernetes_pod_label_app_kubernetes_io_instance, __meta_kubernetes_namespace, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        regex: (.+);(.+);(.+);(.+)
+        target_label: __address__
+        replacement: $1.$2-pd-peer.$3:$4
+        action: replace
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        target_label: cluster
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: instance
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_component]
+        target_label: component
+        action: replace
+      - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        separator: '-'
+        target_label: tidb_cluster
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+        regex: (.+)
+        target_label: __metrics_path__
+        action: replace
+      - source_labels: [__address__]
+        modulus: 1
+        target_label: __tmp_hash
+        action: hashmod
+      - source_labels: [__tmp_hash]
+        regex: $(SHARD)
+        action: keep
+    - job_name: tidb-cluster-basic-tidb
+      honor_labels: true
+      scrape_interval: 1s
+      scheme: http
+      kubernetes_sd_configs:
+      - api_server: null
+        role: pod
+        namespaces:
+          names:
+          - tidb-cluster
+      tls_config:
+        insecure_skip_verify: true
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        regex: basic
+        action: keep
+      - source_labels: [__meta_kubernetes_namespace]
+        regex: tidb-cluster
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        regex: "true"
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_component]
+        regex: tidb
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_name, __meta_kubernetes_pod_label_app_kubernetes_io_instance, __meta_kubernetes_namespace, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        regex: (.+);(.+);(.+);(.+)
+        target_label: __address__
+        replacement: $1.$2-tidb-peer.$3:$4
+        action: replace
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        target_label: cluster
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: instance
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_component]
+        target_label: component
+        action: replace
+      - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        separator: '-'
+        target_label: tidb_cluster
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+        regex: (.+)
+        target_label: __metrics_path__
+        action: replace
+      - source_labels: [__address__]
+        modulus: 1
+        target_label: __tmp_hash
+        action: hashmod
+      - source_labels: [__tmp_hash]
+        regex: $(SHARD)
+        action: keep
+    - job_name: tidb-cluster-basic-tikv
+      honor_labels: true
+      scrape_interval: 1s
+      scheme: http
+      kubernetes_sd_configs:
+      - api_server: null
+        role: pod
+        namespaces:
+          names:
+          - tidb-cluster
+      tls_config:
+        insecure_skip_verify: true
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        regex: basic
+        action: keep
+      - source_labels: [__meta_kubernetes_namespace]
+        regex: tidb-cluster
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        regex: "true"
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_component]
+        regex: tikv
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_name, __meta_kubernetes_pod_label_app_kubernetes_io_instance, __meta_kubernetes_namespace, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        regex: (.+);(.+);(.+);(.+)
+        target_label: __address__
+        replacement: $1.$2-tikv-peer.$3:$4
+        action: replace
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        target_label: cluster
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: instance
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_component]
+        target_label: component
+        action: replace
+      - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        separator: '-'
+        target_label: tidb_cluster
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+        regex: (.+)
+        target_label: __metrics_path__
+        action: replace
+      - source_labels: [__address__]
+        modulus: 1
+        target_label: __tmp_hash
+        action: hashmod
+      - source_labels: [__tmp_hash]
+        regex: $(SHARD)
+        action: keep
+    - job_name: tidb-cluster-basic-tiflash
+      honor_labels: true
+      scrape_interval: 1s
+      scheme: http
+      kubernetes_sd_configs:
+      - api_server: null
+        role: pod
+        namespaces:
+          names:
+          - tidb-cluster
+      tls_config:
+        insecure_skip_verify: true
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        regex: basic
+        action: keep
+      - source_labels: [__meta_kubernetes_namespace]
+        regex: tidb-cluster
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        regex: "true"
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_component]
+        regex: tiflash
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_name, __meta_kubernetes_pod_label_app_kubernetes_io_instance, __meta_kubernetes_namespace, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        regex: (.+);(.+);(.+);(.+)
+        target_label: __address__
+        replacement: $1.$2-tiflash-peer.$3:$4
+        action: replace
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        target_label: cluster
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: instance
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_component]
+        target_label: component
+        action: replace
+      - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        separator: '-'
+        target_label: tidb_cluster
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+        regex: (.+)
+        target_label: __metrics_path__
+        action: replace
+      - source_labels: [__address__]
+        modulus: 1
+        target_label: __tmp_hash
+        action: hashmod
+      - source_labels: [__tmp_hash]
+        regex: $(SHARD)
+        action: keep
+    - job_name: tidb-cluster-basic-tiflash-proxy
+      honor_labels: true
+      scrape_interval: 1s
+      scheme: http
+      kubernetes_sd_configs:
+      - api_server: null
+        role: pod
+        namespaces:
+          names:
+          - tidb-cluster
+      tls_config:
+        insecure_skip_verify: true
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        regex: basic
+        action: keep
+      - source_labels: [__meta_kubernetes_namespace]
+        regex: tidb-cluster
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        regex: "true"
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_component]
+        regex: tiflash
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_name, __meta_kubernetes_pod_label_app_kubernetes_io_instance, __meta_kubernetes_namespace, __meta_kubernetes_pod_annotation_tiflash_proxy_prometheus_io_port]
+        regex: (.+);(.+);(.+);(.+)
+        target_label: __address__
+        replacement: $1.$2-tiflash-peer.$3:$4
+        action: replace
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        target_label: cluster
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: instance
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_component]
+        target_label: component
+        action: replace
+      - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        separator: '-'
+        target_label: tidb_cluster
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+        regex: (.+)
+        target_label: __metrics_path__
+        action: replace
+      - source_labels: [__address__]
+        modulus: 1
+        target_label: __tmp_hash
+        action: hashmod
+      - source_labels: [__tmp_hash]
+        regex: $(SHARD)
+        action: keep
+    - job_name: tidb-cluster-basic-pump
+      honor_labels: true
+      scrape_interval: 1s
+      scheme: http
+      kubernetes_sd_configs:
+      - api_server: null
+        role: pod
+        namespaces:
+          names:
+          - tidb-cluster
+      tls_config:
+        insecure_skip_verify: true
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        regex: basic
+        action: keep
+      - source_labels: [__meta_kubernetes_namespace]
+        regex: tidb-cluster
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        regex: "true"
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_component]
+        regex: pump
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_name, __meta_kubernetes_pod_label_app_kubernetes_io_instance, __meta_kubernetes_namespace, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        regex: (.+);(.+);(.+);(.+)
+        target_label: __address__
+        replacement: $1.$2-pump.$3:$4
+        action: replace
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        target_label: cluster
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: instance
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_component]
+        target_label: component
+        action: replace
+      - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        separator: '-'
+        target_label: tidb_cluster
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+        regex: (.+)
+        target_label: __metrics_path__
+        action: replace
+      - source_labels: [__address__]
+        modulus: 1
+        target_label: __tmp_hash
+        action: hashmod
+      - source_labels: [__tmp_hash]
+        regex: $(SHARD)
+        action: keep
+    - job_name: tidb-cluster-basic-drainer
+      honor_labels: true
+      scrape_interval: 1s
+      scheme: http
+      kubernetes_sd_configs:
+      - api_server: null
+        role: pod
+        namespaces:
+          names:
+          - tidb-cluster
+      tls_config:
+        insecure_skip_verify: true
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        regex: basic
+        action: keep
+      - source_labels: [__meta_kubernetes_namespace]
+        regex: tidb-cluster
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        regex: "true"
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_component]
+        regex: drainer
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_name, __meta_kubernetes_pod_label_app_kubernetes_io_name, __meta_kubernetes_namespace, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        regex: (.+);(.+);(.+);(.+)
+        target_label: __address__
+        replacement: $1.$2.$3:$4
+        action: replace
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        target_label: cluster
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: instance
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_component]
+        target_label: component
+        action: replace
+      - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        separator: '-'
+        target_label: tidb_cluster
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+        regex: (.+)
+        target_label: __metrics_path__
+        action: replace
+      - source_labels: [__address__]
+        modulus: 1
+        target_label: __tmp_hash
+        action: hashmod
+      - source_labels: [__tmp_hash]
+        regex: $(SHARD)
+        action: keep
+    - job_name: tidb-cluster-basic-ticdc
+      honor_labels: true
+      scrape_interval: 1s
+      scheme: http
+      kubernetes_sd_configs:
+      - api_server: null
+        role: pod
+        namespaces:
+          names:
+          - tidb-cluster
+      tls_config:
+        insecure_skip_verify: true
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        regex: basic
+        action: keep
+      - source_labels: [__meta_kubernetes_namespace]
+        regex: tidb-cluster
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        regex: "true"
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_component]
+        regex: ticdc
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_name, __meta_kubernetes_pod_label_app_kubernetes_io_instance, __meta_kubernetes_namespace, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        regex: (.+);(.+);(.+);(.+)
+        target_label: __address__
+        replacement: $1.$2-ticdc-peer.$3:$4
+        action: replace
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        target_label: cluster
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: instance
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_component]
+        target_label: component
+        action: replace
+      - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        separator: '-'
+        target_label: tidb_cluster
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+        regex: (.+)
+        target_label: __metrics_path__
+        action: replace
+      - source_labels: [__address__]
+        modulus: 1
+        target_label: __tmp_hash
+        action: hashmod
+      - source_labels: [__tmp_hash]
+        regex: $(SHARD)
+        action: keep
+    - job_name: tidb-cluster-basic-importer
+      honor_labels: true
+      scrape_interval: 1s
+      scheme: http
+      kubernetes_sd_configs:
+      - api_server: null
+        role: pod
+        namespaces:
+          names:
+          - tidb-cluster
+      tls_config:
+        insecure_skip_verify: true
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        regex: basic
+        action: keep
+      - source_labels: [__meta_kubernetes_namespace]
+        regex: tidb-cluster
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        regex: "true"
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_component]
+        regex: importer
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_name, __meta_kubernetes_pod_label_app_kubernetes_io_instance, __meta_kubernetes_namespace, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        regex: (.+);(.+);(.+);(.+)
+        target_label: __address__
+        replacement: $1.$2-importer.$3:$4
+        action: replace
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        target_label: cluster
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: instance
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_component]
+        target_label: component
+        action: replace
+      - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        separator: '-'
+        target_label: tidb_cluster
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+        regex: (.+)
+        target_label: __metrics_path__
+        action: replace
+      - source_labels: [__address__]
+        modulus: 1
+        target_label: __tmp_hash
+        action: hashmod
+      - source_labels: [__tmp_hash]
+        regex: $(SHARD)
+        action: keep
+    - job_name: tidb-cluster-basic-lightning
+      honor_labels: true
+      scrape_interval: 1s
+      scheme: http
+      kubernetes_sd_configs:
+      - api_server: null
+        role: pod
+        namespaces:
+          names:
+          - tidb-cluster
+      tls_config:
+        insecure_skip_verify: true
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        regex: basic
+        action: keep
+      - source_labels: [__meta_kubernetes_namespace]
+        regex: tidb-cluster
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        regex: "true"
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_component]
+        regex: tidb-lightning
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_name, __meta_kubernetes_pod_label_app_kubernetes_io_name, __meta_kubernetes_namespace, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        regex: (.+);(.+);(.+);(.+)
+        target_label: __address__
+        replacement: $2.$3:$4
+        action: replace
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        target_label: cluster
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: instance
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_component]
+        target_label: component
+        action: replace
+      - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        separator: '-'
+        target_label: tidb_cluster
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+        regex: (.+)
+        target_label: __metrics_path__
+        action: replace
+      - source_labels: [__address__]
+        modulus: 1
+        target_label: __tmp_hash
+        action: hashmod
+      - source_labels: [__tmp_hash]
+        regex: $(SHARD)
+        action: keep
+

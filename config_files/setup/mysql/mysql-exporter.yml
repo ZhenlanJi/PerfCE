@@ -1,0 +1,91 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysqld-exporter
+  labels:
+    app: mysqld-exporter
+spec:
+  type: ClusterIP
+  ports:
+    - name: http-metrics
+      port: 9104
+  selector:
+    app: mysqld-exporter
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysqld-exporter
+  labels:
+    app: mysqld-exporter
+spec:
+  selector:
+    matchLabels:
+      app: mysqld-exporter
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9104"
+      labels:
+        app: mysqld-exporter
+    spec:
+      containers:
+      - name: mysqld-exporter
+        image: prom/mysqld-exporter
+        args:
+        - --collect.info_schema.tables
+        - --collect.info_schema.innodb_tablespaces
+        - --collect.info_schema.innodb_metrics
+        - --collect.global_status
+        - --collect.global_variables
+        - --collect.slave_status
+        - --collect.info_schema.processlist
+        - --collect.perf_schema.tablelocks
+        - --collect.perf_schema.eventsstatements
+        - --collect.perf_schema.eventsstatementssum
+        - --collect.perf_schema.eventswaits
+        - --collect.auto_increment.columns
+        - --collect.binlog_size
+        - --collect.perf_schema.tableiowaits
+        - --collect.perf_schema.indexiowaits
+        - --collect.info_schema.userstats
+        - --collect.info_schema.clientstats
+        - --collect.info_schema.tablestats
+        - --collect.info_schema.schemastats
+        - --collect.perf_schema.file_events
+        - --collect.perf_schema.file_instances
+        - --collect.perf_schema.replication_group_member_stats
+        - --collect.perf_schema.replication_applier_status_by_worker
+        - --collect.slave_hosts
+        - --collect.info_schema.innodb_cmp
+        - --collect.info_schema.innodb_cmpmem
+        - --collect.info_schema.query_response_time
+        - --collect.engine_tokudb_status
+        - --collect.engine_innodb_status
+        env:
+        - name: DATA_SOURCE_NAME
+          value: root:pass@(mysql.default.svc.cluster.local:3306)/
+        ports:
+        - containerPort: 9104
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: mysqld-exporter
+  namespace: monitoring
+  labels:
+    monitor-app: mysqld-exporter
+spec:
+  jobLabel: k8s-app
+  selector:
+    matchLabels:
+      app: mysqld-exporter
+  namespaceSelector:
+    matchNames:
+    - default
+  endpoints:
+  - port: http-metrics
+    interval: 1s
+
