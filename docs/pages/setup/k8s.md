@@ -1,6 +1,6 @@
 ---
 layout: page
-title: K8s Cluster Setup
+title: k8s Cluster Setup
 parent: Setup
 nav_order: 1
 ---
@@ -27,7 +27,7 @@ nodes:
 
 **Step 2:** Run the following command to create the cluster:
 ```bash
-kind create cluster --name $cluster_name --config kind-config.yml
+kind create cluster --name ${cluster_name} --config kind-config.yml
 ```
 > **Note:** The creating process may take a few minutes. Please wait patiently. If you encounter any errors, please refer to the kind [documentation](https://kind.sigs.k8s.io/docs/user/quick-start/) for troubleshooting.
 

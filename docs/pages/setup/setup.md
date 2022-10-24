@@ -23,4 +23,4 @@ The following packages are required:
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - [kind](https://kind.sigs.k8s.io/docs/user/quick-start/)
 
-> **Note:** Reader need to follow the instructions of [K8s Cluster Setup](https://zhenlanji.github.io/PerfCE/setup/k8s) first, then set up TiDB or MySQL on the cluster according to their needs. We don't recommend deploy MySQL and TiDB at the same cluster.
+> **Note:** Reader need to follow the instructions of [k8s Cluster Setup](https://zhenlanji.github.io/PerfCE/setup/k8s) first, then set up TiDB or MySQL on the cluster according to their needs. We don't recommend deploy MySQL and TiDB at the same cluster.
