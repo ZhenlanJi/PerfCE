@@ -2,7 +2,7 @@
 layout: page
 title: Paper & Code
 permalink: /paper/
-nav_order: 5
+nav_order: 6
 ---
 ## Paper
 
