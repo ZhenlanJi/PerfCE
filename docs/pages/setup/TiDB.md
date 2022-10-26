@@ -40,7 +40,7 @@ the cluster to 3 <tt>tikv</tt> to simulate a more realistic scenario. There are 
 
 Reader can refer to [k8s documentation](https://kubernetes.io/docs/concepts/configuration/configmap/) and [TiDB documentation](https://docs.pingcap.com/tidb-in-kubernetes/dev/monitor-a-tidb-cluster) for more details. Here we just provide a brief guide.
 
-**Step 1:** Create <u>external-configMap.yml</u> according to the official [template](https://github.com/pingcap/tidb-operator/blob/master/examples/monitor-with-externalConfigMap/prometheus/external-configMap.yaml). You can find our example in [here](https://github.com/ZhenlanJi/PerfCE/tree/main/config_files/setup/tidb).
+**Step 1:** Create <u>external-configMap.yml</u> according to the official [template](https://github.com/pingcap/tidb-operator/blob/master/examples/monitor-with-externalConfigMap/prometheus/external-configMap.yaml). You can find our example at [here](https://github.com/ZhenlanJi/PerfCE/tree/main/config_files/setup/tidb).
 
 > **Note:** In this config file you can customize the configuration of Prometheus and Grafana. For example, you can change the retention time of Prometheus data, the refresh rate of Grafana dashboard, etc. We set the scrape_interval from 15s to 1s to make the monitoring service more responsive. You can compare the difference between the official template and our configuration.
 
