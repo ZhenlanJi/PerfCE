@@ -18,8 +18,8 @@ Performance Debugging on Databases with Chaos Engineering-Enhanced Causality Ana
   * TiDB Setup
   * MySQL Setup
 * Chaos Engineering (CE)
-  * CE on TiDB
-  * CE on MySQL
+  * Chaos Mesh
+  * Other Chaos Engineering Tools
 * Utilities
   * Causal Discovery
   * Causal Analysis

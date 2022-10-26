@@ -1,0 +1,773 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: Workflow
+metadata:
+  name: serial-train-0
+  namespace: default
+spec:
+  entry: entry
+  templates:
+    - name: entry
+      templateType: Serial
+      deadline: 12h
+      children:
+        - io-latency-10
+        - s-0
+        - io-latency-100
+        - s-1
+        - io-latency-1000
+        - s-2
+        - io-fault-1
+        - s-3
+        - io-fault-2
+        - s-4
+        - io-fault-5
+        - s-5
+        - io-fault-6
+        - s-6
+        - io-fault-12
+        - s-7
+        - io-fault-16
+        - s-8
+        - io-fault-24
+        - s-9
+        - io-fault-28
+        - s-10
+        - network-part
+        - s-11
+        - network-loss-20
+        - s-12
+        - network-loss-40
+        - s-13
+        - network-loss-60
+        - s-14
+        - network-loss-80
+        - s-15
+        - network-delay-10
+        - s-16
+        - network-delay-50
+        - s-17
+        - network-delay-100
+        - s-18
+        - network-dup-20
+        - s-19
+        - network-dup-40
+        - s-20
+        - network-dup-60
+        - s-21
+        - network-dup-80
+        - s-22
+        - network-corr-20
+        - s-23
+        - network-corr-40
+        - s-24
+        - network-corr-60
+        - s-25
+        - network-corr-80
+        - s-26
+        - network-band-0
+        - s-27
+        - network-band-1
+        - s-28
+        - network-band-2
+        - s-29
+        - network-band-3
+        - s-30
+        - cpu-stress-load20
+        - s-31
+        - cpu-stress-load40
+        - s-32
+        - cpu-stress-load60
+        - s-33
+        - cpu-stress-load80
+        - s-34
+        - mem-stress-load20
+        - s-35
+        - mem-stress-load40
+        - s-36
+        - mem-stress-load60
+        - s-37
+        - mem-stress-load80
+    - name: io-latency-10
+      templateType: IOChaos
+      deadline: 60s
+      ioChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: latency
+        delay: 10ms
+        volumePath: /var/lib/mysql
+        percent: 100
+    - name: s-0
+      templateType: Suspend
+      deadline: 15m
+    - name: io-latency-100
+      templateType: IOChaos
+      deadline: 60s
+      ioChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: latency
+        delay: 100ms
+        volumePath: /var/lib/mysql
+        percent: 100
+    - name: s-1
+      templateType: Suspend
+      deadline: 15m
+    - name: io-latency-1000
+      templateType: IOChaos
+      deadline: 60s
+      ioChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: latency
+        delay: 1s
+        volumePath: /var/lib/mysql
+        percent: 100
+    - name: s-2
+      templateType: Suspend
+      deadline: 15m
+    - name: io-fault-1
+      templateType: IOChaos
+      deadline: 60s
+      ioChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: fault
+        errno: 1
+        volumePath: /var/lib/mysql
+        percent: 50
+    - name: s-3
+      templateType: Suspend
+      deadline: 15m
+    - name: io-fault-2
+      templateType: IOChaos
+      deadline: 60s
+      ioChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: fault
+        errno: 2
+        volumePath: /var/lib/mysql
+        percent: 50
+    - name: s-4
+      templateType: Suspend
+      deadline: 15m
+    - name: io-fault-5
+      templateType: IOChaos
+      deadline: 60s
+      ioChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: fault
+        errno: 5
+        volumePath: /var/lib/mysql
+        percent: 50
+    - name: s-5
+      templateType: Suspend
+      deadline: 15m
+    - name: io-fault-6
+      templateType: IOChaos
+      deadline: 60s
+      ioChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: fault
+        errno: 6
+        volumePath: /var/lib/mysql
+        percent: 50
+    - name: s-6
+      templateType: Suspend
+      deadline: 15m
+    - name: io-fault-12
+      templateType: IOChaos
+      deadline: 60s
+      ioChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: fault
+        errno: 12
+        volumePath: /var/lib/mysql
+        percent: 50
+    - name: s-7
+      templateType: Suspend
+      deadline: 15m
+    - name: io-fault-16
+      templateType: IOChaos
+      deadline: 60s
+      ioChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: fault
+        errno: 16
+        volumePath: /var/lib/mysql
+        percent: 50
+    - name: s-8
+      templateType: Suspend
+      deadline: 15m
+    - name: io-fault-24
+      templateType: IOChaos
+      deadline: 60s
+      ioChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: fault
+        errno: 24
+        volumePath: /var/lib/mysql
+        percent: 50
+    - name: s-9
+      templateType: Suspend
+      deadline: 15m
+    - name: io-fault-28
+      templateType: IOChaos
+      deadline: 60s
+      ioChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: fault
+        errno: 28
+        volumePath: /var/lib/mysql
+        percent: 50
+    - name: s-10
+      templateType: Suspend
+      deadline: 15m
+    - name: network-part
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: partition
+        direction: to
+    - name: s-11
+      templateType: Suspend
+      deadline: 15m
+    - name: network-loss-20
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: loss
+        loss:
+          loss: '20'
+          correlation: '50'
+        direction: to
+    - name: s-12
+      templateType: Suspend
+      deadline: 15m
+    - name: network-loss-40
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: loss
+        loss:
+          loss: '40'
+          correlation: '50'
+        direction: to
+    - name: s-13
+      templateType: Suspend
+      deadline: 15m
+    - name: network-loss-60
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: loss
+        loss:
+          loss: '60'
+          correlation: '50'
+        direction: to
+    - name: s-14
+      templateType: Suspend
+      deadline: 15m
+    - name: network-loss-80
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: loss
+        loss:
+          loss: '80'
+          correlation: '50'
+        direction: to
+    - name: s-15
+      templateType: Suspend
+      deadline: 15m
+    - name: network-delay-10
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: delay
+        delay:
+          latency: 10ms
+          jitter: 0ms
+          correlation: '100'
+        direction: to
+    - name: s-16
+      templateType: Suspend
+      deadline: 15m
+    - name: network-delay-50
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: delay
+        delay:
+          latency: 50ms
+          jitter: 0ms
+          correlation: '100'
+        direction: to
+    - name: s-17
+      templateType: Suspend
+      deadline: 15m
+    - name: network-delay-100
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: delay
+        delay:
+          latency: 100ms
+          jitter: 0ms
+          correlation: '100'
+        direction: to
+    - name: s-18
+      templateType: Suspend
+      deadline: 15m
+    - name: network-dup-20
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: duplicate
+        duplicate:
+          duplicate: '20'
+          correlation: '50'
+        direction: to
+    - name: s-19
+      templateType: Suspend
+      deadline: 15m
+    - name: network-dup-40
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: duplicate
+        duplicate:
+          duplicate: '40'
+          correlation: '50'
+        direction: to
+    - name: s-20
+      templateType: Suspend
+      deadline: 15m
+    - name: network-dup-60
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: duplicate
+        duplicate:
+          duplicate: '60'
+          correlation: '50'
+        direction: to
+    - name: s-21
+      templateType: Suspend
+      deadline: 15m
+    - name: network-dup-80
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: duplicate
+        duplicate:
+          duplicate: '80'
+          correlation: '50'
+        direction: to
+    - name: s-22
+      templateType: Suspend
+      deadline: 15m
+    - name: network-corr-20
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: corrupt
+        corrupt:
+          corrupt: '20'
+          correlation: '50'
+        direction: to
+    - name: s-23
+      templateType: Suspend
+      deadline: 15m
+    - name: network-corr-40
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: corrupt
+        corrupt:
+          corrupt: '40'
+          correlation: '50'
+        direction: to
+    - name: s-24
+      templateType: Suspend
+      deadline: 15m
+    - name: network-corr-60
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: corrupt
+        corrupt:
+          corrupt: '60'
+          correlation: '50'
+        direction: to
+    - name: s-25
+      templateType: Suspend
+      deadline: 15m
+    - name: network-corr-80
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: corrupt
+        corrupt:
+          corrupt: '80'
+          correlation: '50'
+        direction: to
+    - name: s-26
+      templateType: Suspend
+      deadline: 15m
+    - name: network-band-0
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: bandwidth
+        bandwidth:
+          rate: 1mbps
+          limit: 10000
+          buffer: 10000
+        direction: to
+    - name: s-27
+      templateType: Suspend
+      deadline: 15m
+    - name: network-band-1
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: bandwidth
+        bandwidth:
+          rate: 1mbps
+          limit: 500
+          buffer: 10000
+        direction: to
+    - name: s-28
+      templateType: Suspend
+      deadline: 15m
+    - name: network-band-2
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: bandwidth
+        bandwidth:
+          rate: 1mbps
+          limit: 10000
+          buffer: 500
+        direction: to
+    - name: s-29
+      templateType: Suspend
+      deadline: 15m
+    - name: network-band-3
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: bandwidth
+        bandwidth:
+          rate: 1mbps
+          limit: 1
+          buffer: 1
+        direction: to
+    - name: s-30
+      templateType: Suspend
+      deadline: 15m
+    - name: cpu-stress-load20
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        stressors:
+          cpu:
+            workers: 1
+            load: 20
+    - name: s-31
+      templateType: Suspend
+      deadline: 15m
+    - name: cpu-stress-load40
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        stressors:
+          cpu:
+            workers: 1
+            load: 40
+    - name: s-32
+      templateType: Suspend
+      deadline: 15m
+    - name: cpu-stress-load60
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        stressors:
+          cpu:
+            workers: 1
+            load: 60
+    - name: s-33
+      templateType: Suspend
+      deadline: 15m
+    - name: cpu-stress-load80
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        stressors:
+          cpu:
+            workers: 1
+            load: 80
+    - name: s-34
+      templateType: Suspend
+      deadline: 15m
+    - name: mem-stress-load20
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        stressors:
+          memory:
+            workers: 1
+            size: 20%
+    - name: s-35
+      templateType: Suspend
+      deadline: 15m
+    - name: mem-stress-load40
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        stressors:
+          memory:
+            workers: 1
+            size: 40%
+    - name: s-36
+      templateType: Suspend
+      deadline: 15m
+    - name: mem-stress-load60
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        stressors:
+          memory:
+            workers: 1
+            size: 60%
+    - name: s-37
+      templateType: Suspend
+      deadline: 15m
+    - name: mem-stress-load80
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        stressors:
+          memory:
+            workers: 1
+            size: 80%

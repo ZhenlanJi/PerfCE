@@ -1,0 +1,199 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: Workflow
+metadata:
+  name: serial-test-0
+  namespace: default
+spec:
+  entry: entry
+  templates:
+    - name: entry
+      templateType: Serial
+      deadline: 2h
+      children:
+        - io-latency
+        - s-0
+        - io-fault-1
+        - s-1
+        - io-fault-5
+        - s-2
+        - network-part
+        - s-3
+        - network-delay
+        - s-4
+        - network-loss
+        - s-5
+        - cpu-stress-0
+        - s-6
+        - cpu-stress-1
+        - s-7
+        - mem-stress-0
+        - s-8
+        - mem-stress-1
+    - name: io-latency
+      templateType: IOChaos
+      deadline: 2m
+      ioChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: latency
+        delay: 100ms
+        volumePath: /var/lib/mysql
+        percent: 100
+    - name: s-0
+      templateType: Suspend
+      deadline: 10m
+    - name: io-fault-1
+      templateType: IOChaos
+      deadline: 2m
+      ioChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: fault
+        errno: 1
+        volumePath: /var/lib/mysql
+        percent: 50
+    - name: s-1
+      templateType: Suspend
+      deadline: 10m
+    - name: io-fault-5
+      templateType: IOChaos
+      deadline: 2m
+      ioChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: fault
+        errno: 5
+        volumePath: /var/lib/mysql
+        percent: 50
+    - name: s-2
+      templateType: Suspend
+      deadline: 10m
+    - name: network-part
+      templateType: NetworkChaos
+      deadline: 2m
+      networkChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: partition
+        direction: to
+    - name: s-3
+      templateType: Suspend
+      deadline: 10m
+    - name: network-delay
+      templateType: NetworkChaos
+      deadline: 2m
+      networkChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: delay
+        delay:
+          latency: 100ms
+          jitter: 0ms
+          correlation: '100'
+        direction: to
+    - name: s-4
+      templateType: Suspend
+      deadline: 10m
+    - name: network-loss
+      templateType: NetworkChaos
+      deadline: 2m
+      networkChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        action: loss
+        loss:
+          loss: '50'
+          correlation: '100'
+        direction: to
+    - name: s-5
+      templateType: Suspend
+      deadline: 10m
+    - name: cpu-stress-0
+      templateType: StressChaos
+      deadline: 2m
+      stressChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        stressors:
+          cpu:
+            workers: 2
+            load: 50
+    - name: s-6
+      templateType: Suspend
+      deadline: 10m
+    - name: cpu-stress-1
+      templateType: StressChaos
+      deadline: 2m
+      stressChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        stressors:
+          cpu:
+            workers: 2
+            load: 100
+    - name: s-7
+      templateType: Suspend
+      deadline: 10m
+    - name: mem-stress-0
+      templateType: StressChaos
+      deadline: 2m
+      stressChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        stressors:
+          memory:
+            workers: 1
+            size: 50%
+    - name: s-8
+      templateType: Suspend
+      deadline: 10m
+    - name: mem-stress-1
+      templateType: StressChaos
+      deadline: 2m
+      stressChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app: mysql
+        mode: all
+        stressors:
+          memory:
+            workers: 2
+            size: 50%

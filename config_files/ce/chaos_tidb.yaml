@@ -1,0 +1,1956 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: Workflow
+metadata:
+  name: serial-task-v2
+  namespace: tidb-cluster
+spec:
+  entry: entry
+  templates:
+    - name: entry
+      templateType: Serial
+      deadline: 20h
+      children:
+        - io-latency-pd
+        - s-0
+        - io-latency-tikv-0
+        - s-1
+        - io-latency-tikv-1
+        - s-2
+        - io-latency-tikv-2
+        - s-3
+        - io-latency-tikv-all
+        - s-4
+        - io-fault-pd-ern1
+        - s-5
+        - io-fault-tikv-0
+        - s-6
+        - io-fault-tikv-1
+        - s-7
+        - io-fault-tikv-2
+        - s-8
+        - io-fault-tikv-all
+        - s-9
+        - pod-fail-pd
+        - s-10
+        - pod-fail-tidb
+        - s-11
+        - pod-fail-tikv-0
+        - s-12
+        - pod-fail-tikv-1
+        - s-13
+        - pod-fail-tikv-2
+        - s-14
+        - pod-fail-tikv-all
+        - s-15
+        - pod-kill-pd
+        - s-16
+        - pod-kill-tidb
+        - s-17
+        - pod-kill-tikv-0
+        - s-18
+        - pod-kill-tikv-1
+        - s-19
+        - pod-kill-tikv-2
+        - s-20
+        - pod-kill-tikv-all
+        - s-21
+        - pod-cont-pd
+        - s-22
+        - pod-cont-tidb
+        - s-23
+        - pod-cont-tikv-0
+        - s-24
+        - pod-cont-tikv-1
+        - s-25
+        - pod-cont-tikv-2
+        - s-26
+        - pod-cont-tikv-all
+        - s-27
+        - network-part
+        - s-28
+        - network-loss-20
+        - s-29
+        - network-loss-40
+        - s-30
+        - network-loss-60
+        - s-31
+        - network-loss-80
+        - s-32
+        - network-loss-100
+        - s-33
+        - network-delay-10
+        - s-34
+        - network-delay-50
+        - s-35
+        - network-delay-100
+        - s-36
+        - network-delay-200
+        - s-37
+        - network-dup-20
+        - s-38
+        - network-dup-40
+        - s-39
+        - network-dup-60
+        - s-40
+        - network-dup-80
+        - s-41
+        - network-dup-100
+        - s-42
+        - network-corr-20
+        - s-43
+        - network-corr-40
+        - s-44
+        - network-corr-60
+        - s-45
+        - network-corr-80
+        - s-46
+        - network-corr-100
+        - s-47
+        - network-band-0
+        - s-48
+        - network-band-1
+        - s-49
+        - network-band-2
+        - s-50
+        - network-band-3
+        - s-51
+        - cpu-stress-pd-load25
+        - s-52
+        - cpu-stress-pd-load50
+        - s-53
+        - cpu-stress-pd-load75
+        - s-54
+        - cpu-stress-pd-load100
+        - s-55
+        - cpu-stress-tidb-load25
+        - s-56
+        - cpu-stress-tidb-load50
+        - s-57
+        - cpu-stress-tidb-load75
+        - s-58
+        - cpu-stress-tidb-load100
+        - s-59
+        - cpu-stress-tikv-0-load25
+        - s-60
+        - cpu-stress-tikv-0-load50
+        - s-61
+        - cpu-stress-tikv-0-load75
+        - s-62
+        - cpu-stress-tikv-0-load100
+        - s-63
+        - cpu-stress-tikv-all-load25
+        - s-64
+        - cpu-stress-tikv-all-load50
+        - s-65
+        - cpu-stress-tikv-all-load75
+        - s-66
+        - cpu-stress-tikv-all-load100
+        - s-67
+        - mem-stress-pd-load25
+        - s-68
+        - mem-stress-pd-load50
+        - s-69
+        - mem-stress-pd-load75
+        - s-70
+        - mem-stress-pd-load100
+        - s-71
+        - mem-stress-tidb-load25
+        - s-72
+        - mem-stress-tidb-load50
+        - s-73
+        - mem-stress-tidb-load75
+        - s-74
+        - mem-stress-tidb-load100
+        - s-75
+        - mem-stress-tikv-0-load25
+        - s-76
+        - mem-stress-tikv-0-load50
+        - s-77
+        - mem-stress-tikv-0-load75
+        - s-78
+        - mem-stress-tikv-0-load100
+        - s-79
+        - mem-stress-tikv-all-load25
+        - s-80
+        - mem-stress-tikv-all-load50
+        - s-81
+        - mem-stress-tikv-all-load75
+        - s-82
+        - mem-stress-tikv-all-load100
+        - s-83
+        - time-pd-n15
+        - s-84
+        - time-pd-n5
+        - s-85
+        - time-pd-p5
+        - s-86
+        - time-pd-p15
+        - s-87
+        - time-tidb-n15
+        - s-88
+        - time-tidb-n5
+        - s-89
+        - time-tidb-p5
+        - s-90
+        - time-tidb-p15
+        - s-91
+        - time-tikv-0-n15
+        - s-92
+        - time-tikv-0-n5
+        - s-93
+        - time-tikv-0-p5
+        - s-94
+        - time-tikv-0-p15
+        - s-95
+        - time-tikv-all-n15
+        - s-96
+        - time-tikv-all-n5
+        - s-97
+        - time-tikv-all-p5
+        - s-98
+        - time-tikv-all-p15
+    - name: io-latency-pd
+      templateType: IOChaos
+      deadline: 60s
+      ioChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: pd
+        mode: all
+        action: latency
+        delay: 1s
+        volumePath: /var/lib/pd
+        percent: 100
+    - name: s-0
+      templateType: Suspend
+      deadline: 10m
+    - name: io-latency-tikv-0
+      templateType: IOChaos
+      deadline: 60s
+      ioChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+          pods:
+            tidb-cluster:
+              - basic-tikv-0
+        mode: all
+        action: latency
+        delay: 1s
+        volumePath: /var/lib/tikv
+        percent: 100
+    - name: s-1
+      templateType: Suspend
+      deadline: 10m
+    - name: io-latency-tikv-1
+      templateType: IOChaos
+      deadline: 60s
+      ioChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+          pods:
+            tidb-cluster:
+              - basic-tikv-1
+        mode: all
+        action: latency
+        delay: 1s
+        volumePath: /var/lib/tikv
+        percent: 100
+    - name: s-2
+      templateType: Suspend
+      deadline: 10m
+    - name: io-latency-tikv-2
+      templateType: IOChaos
+      deadline: 60s
+      ioChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+          pods:
+            tidb-cluster:
+              - basic-tikv-2
+        mode: all
+        action: latency
+        delay: 1s
+        volumePath: /var/lib/tikv
+        percent: 100
+    - name: s-3
+      templateType: Suspend
+      deadline: 10m
+    - name: io-latency-tikv-all
+      templateType: IOChaos
+      deadline: 60s
+      ioChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+        mode: all
+        action: latency
+        delay: 1s
+        volumePath: /var/lib/tikv
+        percent: 100
+    - name: s-4
+      templateType: Suspend
+      deadline: 10m
+    - name: io-fault-pd-ern1
+      templateType: IOChaos
+      deadline: 60s
+      ioChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: pd
+        mode: all
+        action: fault
+        errno: 1
+        volumePath: /var/lib/pd
+        percent: 100
+    - name: s-5
+      templateType: Suspend
+      deadline: 10m
+    - name: io-fault-tikv-0
+      templateType: IOChaos
+      deadline: 60s
+      ioChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+          pods:
+            tidb-cluster:
+              - basic-tikv-0
+        mode: all
+        action: fault
+        errno: 1
+        volumePath: /var/lib/tikv
+        percent: 100
+    - name: s-6
+      templateType: Suspend
+      deadline: 10m
+    - name: io-fault-tikv-1
+      templateType: IOChaos
+      deadline: 60s
+      ioChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+          pods:
+            tidb-cluster:
+              - basic-tikv-1
+        mode: all
+        action: fault
+        errno: 1
+        volumePath: /var/lib/tikv
+        percent: 100
+    - name: s-7
+      templateType: Suspend
+      deadline: 10m
+    - name: io-fault-tikv-2
+      templateType: IOChaos
+      deadline: 60s
+      ioChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+          pods:
+            tidb-cluster:
+              - basic-tikv-2
+        mode: all
+        action: fault
+        errno: 1
+        volumePath: /var/lib/tikv
+        percent: 100
+    - name: s-8
+      templateType: Suspend
+      deadline: 10m
+    - name: io-fault-tikv-all
+      templateType: IOChaos
+      deadline: 60s
+      ioChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+        mode: all
+        action: fault
+        errno: 1
+        volumePath: /var/lib/tikv
+        percent: 100
+    - name: s-9
+      templateType: Suspend
+      deadline: 10m
+    - name: pod-fail-pd
+      templateType: PodChaos
+      deadline: 60s
+      podChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: pd
+        mode: all
+        action: pod-failure
+    - name: s-10
+      templateType: Suspend
+      deadline: 10m
+    - name: pod-fail-tidb
+      templateType: PodChaos
+      deadline: 60s
+      podChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tidb
+        mode: all
+        action: pod-failure
+    - name: s-11
+      templateType: Suspend
+      deadline: 10m
+    - name: pod-fail-tikv-0
+      templateType: PodChaos
+      deadline: 60s
+      podChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+          pods:
+            tidb-cluster:
+              - basic-tikv-0
+        mode: all
+        action: pod-failure
+    - name: s-12
+      templateType: Suspend
+      deadline: 10m
+    - name: pod-fail-tikv-1
+      templateType: PodChaos
+      deadline: 60s
+      podChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+          pods:
+            tidb-cluster:
+              - basic-tikv-1
+        mode: all
+        action: pod-failure
+    - name: s-13
+      templateType: Suspend
+      deadline: 10m
+    - name: pod-fail-tikv-2
+      templateType: PodChaos
+      deadline: 60s
+      podChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+          pods:
+            tidb-cluster:
+              - basic-tikv-2
+        mode: all
+        action: pod-failure
+    - name: s-14
+      templateType: Suspend
+      deadline: 10m
+    - name: pod-fail-tikv-all
+      templateType: PodChaos
+      deadline: 60s
+      podChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+        mode: all
+        action: pod-failure
+    - name: s-15
+      templateType: Suspend
+      deadline: 10m
+    - name: pod-kill-pd
+      templateType: PodChaos
+      deadline: 60s
+      podChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: pd
+        mode: all
+        action: pod-kill
+    - name: s-16
+      templateType: Suspend
+      deadline: 10m
+    - name: pod-kill-tidb
+      templateType: PodChaos
+      deadline: 60s
+      podChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tidb
+        mode: all
+        action: pod-kill
+    - name: s-17
+      templateType: Suspend
+      deadline: 10m
+    - name: pod-kill-tikv-0
+      templateType: PodChaos
+      deadline: 60s
+      podChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+          pods:
+            tidb-cluster:
+              - basic-tikv-0
+        mode: all
+        action: pod-kill
+    - name: s-18
+      templateType: Suspend
+      deadline: 10m
+    - name: pod-kill-tikv-1
+      templateType: PodChaos
+      deadline: 60s
+      podChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+          pods:
+            tidb-cluster:
+              - basic-tikv-1
+        mode: all
+        action: pod-kill
+    - name: s-19
+      templateType: Suspend
+      deadline: 10m
+    - name: pod-kill-tikv-2
+      templateType: PodChaos
+      deadline: 60s
+      podChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+          pods:
+            tidb-cluster:
+              - basic-tikv-2
+        mode: all
+        action: pod-kill
+    - name: s-20
+      templateType: Suspend
+      deadline: 10m
+    - name: pod-kill-tikv-all
+      templateType: PodChaos
+      deadline: 60s
+      podChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+        mode: all
+        action: pod-kill
+    - name: s-21
+      templateType: Suspend
+      deadline: 10m
+    - name: pod-cont-pd
+      templateType: PodChaos
+      deadline: 60s
+      podChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: pd
+        mode: all
+        action: container-kill
+        containerNames:
+          - pd
+    - name: s-22
+      templateType: Suspend
+      deadline: 10m
+    - name: pod-cont-tidb
+      templateType: PodChaos
+      deadline: 60s
+      podChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tidb
+        mode: all
+        action: container-kill
+        containerNames:
+          - tidb
+    - name: s-23
+      templateType: Suspend
+      deadline: 10m
+    - name: pod-cont-tikv-0
+      templateType: PodChaos
+      deadline: 60s
+      podChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+          pods:
+            tidb-cluster:
+              - basic-tikv-0
+        mode: all
+        action: container-kill
+        containerNames:
+          - tikv
+    - name: s-24
+      templateType: Suspend
+      deadline: 10m
+    - name: pod-cont-tikv-1
+      templateType: PodChaos
+      deadline: 60s
+      podChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+          pods:
+            tidb-cluster:
+              - basic-tikv-1
+        mode: all
+        action: container-kill
+        containerNames:
+          - tikv
+    - name: s-25
+      templateType: Suspend
+      deadline: 10m
+    - name: pod-cont-tikv-2
+      templateType: PodChaos
+      deadline: 60s
+      podChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+          pods:
+            tidb-cluster:
+              - basic-tikv-2
+        mode: all
+        action: container-kill
+        containerNames:
+          - tikv
+    - name: s-26
+      templateType: Suspend
+      deadline: 10m
+    - name: pod-cont-tikv-all
+      templateType: PodChaos
+      deadline: 60s
+      podChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+        mode: all
+        action: container-kill
+        containerNames:
+          - tikv
+    - name: s-27
+      templateType: Suspend
+      deadline: 10m
+    - name: network-part
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          pods:
+            tidb-cluster:
+              - basic-pd-0
+              - basic-tidb-0
+              - basic-tikv-0
+              - basic-tikv-1
+              - basic-tikv-2
+        mode: all
+        action: partition
+        direction: to
+    - name: s-28
+      templateType: Suspend
+      deadline: 10m
+    - name: network-loss-20
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          pods:
+            tidb-cluster:
+              - basic-tikv-0
+        mode: all
+        action: loss
+        loss:
+          loss: '20'
+          correlation: '50'
+        direction: to
+    - name: s-29
+      templateType: Suspend
+      deadline: 10m
+    - name: network-loss-40
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          pods:
+            tidb-cluster:
+              - basic-tikv-0
+        mode: all
+        action: loss
+        loss:
+          loss: '40'
+          correlation: '50'
+        direction: to
+    - name: s-30
+      templateType: Suspend
+      deadline: 10m
+    - name: network-loss-60
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          pods:
+            tidb-cluster:
+              - basic-tikv-0
+        mode: all
+        action: loss
+        loss:
+          loss: '60'
+          correlation: '50'
+        direction: to
+    - name: s-31
+      templateType: Suspend
+      deadline: 10m
+    - name: network-loss-80
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          pods:
+            tidb-cluster:
+              - basic-tikv-0
+        mode: all
+        action: loss
+        loss:
+          loss: '80'
+          correlation: '50'
+        direction: to
+    - name: s-32
+      templateType: Suspend
+      deadline: 10m
+    - name: network-loss-100
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          pods:
+            tidb-cluster:
+              - basic-tikv-0
+        mode: all
+        action: loss
+        loss:
+          loss: '100'
+          correlation: '50'
+        direction: to
+    - name: s-33
+      templateType: Suspend
+      deadline: 10m
+    - name: network-delay-10
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          pods:
+            tidb-cluster:
+              - basic-tikv-1
+        mode: all
+        action: delay
+        delay:
+          latency: 10ms
+          jitter: 0ms
+          correlation: '100'
+        direction: to
+    - name: s-34
+      templateType: Suspend
+      deadline: 10m
+    - name: network-delay-50
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          pods:
+            tidb-cluster:
+              - basic-tikv-1
+        mode: all
+        action: delay
+        delay:
+          latency: 50ms
+          jitter: 0ms
+          correlation: '100'
+        direction: to
+    - name: s-35
+      templateType: Suspend
+      deadline: 10m
+    - name: network-delay-100
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          pods:
+            tidb-cluster:
+              - basic-tikv-1
+        mode: all
+        action: delay
+        delay:
+          latency: 100ms
+          jitter: 0ms
+          correlation: '100'
+        direction: to
+    - name: s-36
+      templateType: Suspend
+      deadline: 10m
+    - name: network-delay-200
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          pods:
+            tidb-cluster:
+              - basic-tikv-1
+        mode: all
+        action: delay
+        delay:
+          latency: 200ms
+          jitter: 0ms
+          correlation: '100'
+        direction: to
+    - name: s-37
+      templateType: Suspend
+      deadline: 10m
+    - name: network-dup-20
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          pods:
+            tidb-cluster:
+              - basic-tikv-2
+        mode: all
+        action: duplicate
+        duplicate:
+          duplicate: '20'
+          correlation: '50'
+        direction: to
+    - name: s-38
+      templateType: Suspend
+      deadline: 10m
+    - name: network-dup-40
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          pods:
+            tidb-cluster:
+              - basic-tikv-2
+        mode: all
+        action: duplicate
+        duplicate:
+          duplicate: '40'
+          correlation: '50'
+        direction: to
+    - name: s-39
+      templateType: Suspend
+      deadline: 10m
+    - name: network-dup-60
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          pods:
+            tidb-cluster:
+              - basic-tikv-2
+        mode: all
+        action: duplicate
+        duplicate:
+          duplicate: '60'
+          correlation: '50'
+        direction: to
+    - name: s-40
+      templateType: Suspend
+      deadline: 10m
+    - name: network-dup-80
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          pods:
+            tidb-cluster:
+              - basic-tikv-2
+        mode: all
+        action: duplicate
+        duplicate:
+          duplicate: '80'
+          correlation: '50'
+        direction: to
+    - name: s-41
+      templateType: Suspend
+      deadline: 10m
+    - name: network-dup-100
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          pods:
+            tidb-cluster:
+              - basic-tikv-2
+        mode: all
+        action: duplicate
+        duplicate:
+          duplicate: '100'
+          correlation: '50'
+        direction: to
+    - name: s-42
+      templateType: Suspend
+      deadline: 10m
+    - name: network-corr-20
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          pods:
+            tidb-cluster:
+              - basic-pd-0
+        mode: all
+        action: corrupt
+        corrupt:
+          corrupt: '20'
+          correlation: '50'
+        direction: to
+    - name: s-43
+      templateType: Suspend
+      deadline: 10m
+    - name: network-corr-40
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          pods:
+            tidb-cluster:
+              - basic-pd-0
+        mode: all
+        action: corrupt
+        corrupt:
+          corrupt: '40'
+          correlation: '50'
+        direction: to
+    - name: s-44
+      templateType: Suspend
+      deadline: 10m
+    - name: network-corr-60
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          pods:
+            tidb-cluster:
+              - basic-pd-0
+        mode: all
+        action: corrupt
+        corrupt:
+          corrupt: '60'
+          correlation: '50'
+        direction: to
+    - name: s-45
+      templateType: Suspend
+      deadline: 10m
+    - name: network-corr-80
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          pods:
+            tidb-cluster:
+              - basic-pd-0
+        mode: all
+        action: corrupt
+        corrupt:
+          corrupt: '80'
+          correlation: '50'
+        direction: to
+    - name: s-46
+      templateType: Suspend
+      deadline: 10m
+    - name: network-corr-100
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          pods:
+            tidb-cluster:
+              - basic-pd-0
+        mode: all
+        action: corrupt
+        corrupt:
+          corrupt: '100'
+          correlation: '50'
+        direction: to
+    - name: s-47
+      templateType: Suspend
+      deadline: 10m
+    - name: network-band-0
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          pods:
+            tidb-cluster:
+              - basic-tidb-0
+        mode: all
+        action: bandwidth
+        bandwidth:
+          rate: 1mbps
+          limit: 10000
+          buffer: 10000
+        direction: to
+    - name: s-48
+      templateType: Suspend
+      deadline: 10m
+    - name: network-band-1
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          pods:
+            tidb-cluster:
+              - basic-tidb-0
+        mode: all
+        action: bandwidth
+        bandwidth:
+          rate: 1mbps
+          limit: 500
+          buffer: 10000
+        direction: to
+    - name: s-49
+      templateType: Suspend
+      deadline: 10m
+    - name: network-band-2
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          pods:
+            tidb-cluster:
+              - basic-tidb-0
+        mode: all
+        action: bandwidth
+        bandwidth:
+          rate: 1mbps
+          limit: 10000
+          buffer: 500
+        direction: to
+    - name: s-50
+      templateType: Suspend
+      deadline: 10m
+    - name: network-band-3
+      templateType: NetworkChaos
+      deadline: 60s
+      networkChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          pods:
+            tidb-cluster:
+              - basic-tidb-0
+        mode: all
+        action: bandwidth
+        bandwidth:
+          rate: 1mbps
+          limit: 1
+          buffer: 1
+        direction: to
+    - name: s-51
+      templateType: Suspend
+      deadline: 10m
+    - name: cpu-stress-pd-load25
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: pd
+        mode: all
+        stressors:
+          cpu:
+            workers: 1
+            load: 25
+    - name: s-52
+      templateType: Suspend
+      deadline: 10m
+    - name: cpu-stress-pd-load50
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: pd
+        mode: all
+        stressors:
+          cpu:
+            workers: 1
+            load: 50
+    - name: s-53
+      templateType: Suspend
+      deadline: 10m
+    - name: cpu-stress-pd-load75
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: pd
+        mode: all
+        stressors:
+          cpu:
+            workers: 1
+            load: 75
+    - name: s-54
+      templateType: Suspend
+      deadline: 10m
+    - name: cpu-stress-pd-load100
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: pd
+        mode: all
+        stressors:
+          cpu:
+            workers: 1
+            load: 100
+    - name: s-55
+      templateType: Suspend
+      deadline: 10m
+    - name: cpu-stress-tidb-load25
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tidb
+        mode: all
+        stressors:
+          cpu:
+            workers: 1
+            load: 25
+    - name: s-56
+      templateType: Suspend
+      deadline: 10m
+    - name: cpu-stress-tidb-load50
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tidb
+        mode: all
+        stressors:
+          cpu:
+            workers: 1
+            load: 50
+    - name: s-57
+      templateType: Suspend
+      deadline: 10m
+    - name: cpu-stress-tidb-load75
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tidb
+        mode: all
+        stressors:
+          cpu:
+            workers: 1
+            load: 75
+    - name: s-58
+      templateType: Suspend
+      deadline: 10m
+    - name: cpu-stress-tidb-load100
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tidb
+        mode: all
+        stressors:
+          cpu:
+            workers: 1
+            load: 100
+    - name: s-59
+      templateType: Suspend
+      deadline: 10m
+    - name: cpu-stress-tikv-0-load25
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+          pods:
+            tidb-cluster:
+              - basic-tikv-0
+        mode: all
+        stressors:
+          cpu:
+            workers: 1
+            load: 25
+    - name: s-60
+      templateType: Suspend
+      deadline: 10m
+    - name: cpu-stress-tikv-0-load50
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+          pods:
+            tidb-cluster:
+              - basic-tikv-0
+        mode: all
+        stressors:
+          cpu:
+            workers: 1
+            load: 50
+    - name: s-61
+      templateType: Suspend
+      deadline: 10m
+    - name: cpu-stress-tikv-0-load75
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+          pods:
+            tidb-cluster:
+              - basic-tikv-0
+        mode: all
+        stressors:
+          cpu:
+            workers: 1
+            load: 75
+    - name: s-62
+      templateType: Suspend
+      deadline: 10m
+    - name: cpu-stress-tikv-0-load100
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+          pods:
+            tidb-cluster:
+              - basic-tikv-0
+        mode: all
+        stressors:
+          cpu:
+            workers: 1
+            load: 100
+    - name: s-63
+      templateType: Suspend
+      deadline: 10m
+    - name: cpu-stress-tikv-all-load25
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+        mode: all
+        stressors:
+          cpu:
+            workers: 1
+            load: 25
+    - name: s-64
+      templateType: Suspend
+      deadline: 10m
+    - name: cpu-stress-tikv-all-load50
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+        mode: all
+        stressors:
+          cpu:
+            workers: 1
+            load: 50
+    - name: s-65
+      templateType: Suspend
+      deadline: 10m
+    - name: cpu-stress-tikv-all-load75
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+        mode: all
+        stressors:
+          cpu:
+            workers: 1
+            load: 75
+    - name: s-66
+      templateType: Suspend
+      deadline: 10m
+    - name: cpu-stress-tikv-all-load100
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+        mode: all
+        stressors:
+          cpu:
+            workers: 1
+            load: 100
+    - name: s-67
+      templateType: Suspend
+      deadline: 10m
+    - name: mem-stress-pd-load25
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: pd
+        mode: all
+        stressors:
+          memory:
+            workers: 1
+            size: 25%
+    - name: s-68
+      templateType: Suspend
+      deadline: 10m
+    - name: mem-stress-pd-load50
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: pd
+        mode: all
+        stressors:
+          memory:
+            workers: 1
+            size: 50%
+    - name: s-69
+      templateType: Suspend
+      deadline: 10m
+    - name: mem-stress-pd-load75
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: pd
+        mode: all
+        stressors:
+          memory:
+            workers: 1
+            size: 75%
+    - name: s-70
+      templateType: Suspend
+      deadline: 10m
+    - name: mem-stress-pd-load100
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: pd
+        mode: all
+        stressors:
+          memory:
+            workers: 1
+            size: 100%
+    - name: s-71
+      templateType: Suspend
+      deadline: 10m
+    - name: mem-stress-tidb-load25
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tidb
+        mode: all
+        stressors:
+          memory:
+            workers: 1
+            size: 25%
+    - name: s-72
+      templateType: Suspend
+      deadline: 10m
+    - name: mem-stress-tidb-load50
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tidb
+        mode: all
+        stressors:
+          memory:
+            workers: 1
+            size: 50%
+    - name: s-73
+      templateType: Suspend
+      deadline: 10m
+    - name: mem-stress-tidb-load75
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tidb
+        mode: all
+        stressors:
+          memory:
+            workers: 1
+            size: 75%
+    - name: s-74
+      templateType: Suspend
+      deadline: 10m
+    - name: mem-stress-tidb-load100
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tidb
+        mode: all
+        stressors:
+          memory:
+            workers: 1
+            size: 100%
+    - name: s-75
+      templateType: Suspend
+      deadline: 10m
+    - name: mem-stress-tikv-0-load25
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+          pods:
+            tidb-cluster:
+              - basic-tikv-0
+        mode: all
+        stressors:
+          memory:
+            workers: 1
+            size: 25%
+    - name: s-76
+      templateType: Suspend
+      deadline: 10m
+    - name: mem-stress-tikv-0-load50
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+          pods:
+            tidb-cluster:
+              - basic-tikv-0
+        mode: all
+        stressors:
+          memory:
+            workers: 1
+            size: 50%
+    - name: s-77
+      templateType: Suspend
+      deadline: 10m
+    - name: mem-stress-tikv-0-load75
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+          pods:
+            tidb-cluster:
+              - basic-tikv-0
+        mode: all
+        stressors:
+          memory:
+            workers: 1
+            size: 75%
+    - name: s-78
+      templateType: Suspend
+      deadline: 10m
+    - name: mem-stress-tikv-0-load100
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+          pods:
+            tidb-cluster:
+              - basic-tikv-0
+        mode: all
+        stressors:
+          memory:
+            workers: 1
+            size: 100%
+    - name: s-79
+      templateType: Suspend
+      deadline: 10m
+    - name: mem-stress-tikv-all-load25
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+        mode: all
+        stressors:
+          memory:
+            workers: 1
+            size: 25%
+    - name: s-80
+      templateType: Suspend
+      deadline: 10m
+    - name: mem-stress-tikv-all-load50
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+        mode: all
+        stressors:
+          memory:
+            workers: 1
+            size: 50%
+    - name: s-81
+      templateType: Suspend
+      deadline: 10m
+    - name: mem-stress-tikv-all-load75
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+        mode: all
+        stressors:
+          memory:
+            workers: 1
+            size: 75%
+    - name: s-82
+      templateType: Suspend
+      deadline: 10m
+    - name: mem-stress-tikv-all-load100
+      templateType: StressChaos
+      deadline: 60s
+      stressChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+        mode: all
+        stressors:
+          memory:
+            workers: 1
+            size: 100%
+    - name: s-83
+      templateType: Suspend
+      deadline: 10m
+    - name: time-pd-n15
+      templateType: TimeChaos
+      deadline: 60s
+      timeChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: pd
+        mode: all
+        timeOffset: '-15m'
+    - name: s-84
+      templateType: Suspend
+      deadline: 10m
+    - name: time-pd-n5
+      templateType: TimeChaos
+      deadline: 60s
+      timeChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: pd
+        mode: all
+        timeOffset: '-5m'
+    - name: s-85
+      templateType: Suspend
+      deadline: 10m
+    - name: time-pd-p5
+      templateType: TimeChaos
+      deadline: 60s
+      timeChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: pd
+        mode: all
+        timeOffset: '5m'
+    - name: s-86
+      templateType: Suspend
+      deadline: 10m
+    - name: time-pd-p15
+      templateType: TimeChaos
+      deadline: 60s
+      timeChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: pd
+        mode: all
+        timeOffset: '15m'
+    - name: s-87
+      templateType: Suspend
+      deadline: 10m
+    - name: time-tidb-n15
+      templateType: TimeChaos
+      deadline: 60s
+      timeChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tidb
+        mode: all
+        timeOffset: '-15m'
+    - name: s-88
+      templateType: Suspend
+      deadline: 10m
+    - name: time-tidb-n5
+      templateType: TimeChaos
+      deadline: 60s
+      timeChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tidb
+        mode: all
+        timeOffset: '-5m'
+    - name: s-89
+      templateType: Suspend
+      deadline: 10m
+    - name: time-tidb-p5
+      templateType: TimeChaos
+      deadline: 60s
+      timeChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tidb
+        mode: all
+        timeOffset: '5m'
+    - name: s-90 
+      templateType: Suspend
+      deadline: 10m
+    - name: time-tidb-p15
+      templateType: TimeChaos
+      deadline: 60s
+      timeChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tidb
+        mode: all
+        timeOffset: '15m'
+    - name: s-91
+      templateType: Suspend
+      deadline: 10m
+    - name: time-tikv-0-n15
+      templateType: TimeChaos
+      deadline: 60s
+      timeChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+          pods:
+            tidb-cluster:
+              - basic-tikv-0
+        mode: all
+        timeOffset: '-15m'
+    - name: s-92
+      templateType: Suspend
+      deadline: 10m
+    - name: time-tikv-0-n5
+      templateType: TimeChaos
+      deadline: 60s
+      timeChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+          pods:
+            tidb-cluster:
+              - basic-tikv-0
+        mode: all
+        timeOffset: '-5m'
+    - name: s-93
+      templateType: Suspend
+      deadline: 10m
+    - name: time-tikv-0-p5
+      templateType: TimeChaos
+      deadline: 60s
+      timeChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+          pods:
+            tidb-cluster:
+              - basic-tikv-0
+        mode: all
+        timeOffset: '5m'
+    - name: s-94
+      templateType: Suspend
+      deadline: 10m
+    - name: time-tikv-0-p15
+      templateType: TimeChaos
+      deadline: 60s
+      timeChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+          pods:
+            tidb-cluster:
+              - basic-tikv-0
+        mode: all
+        timeOffset: '15m'
+    - name: s-95
+      templateType: Suspend
+      deadline: 10m
+    - name: time-tikv-all-n15
+      templateType: TimeChaos
+      deadline: 60s
+      timeChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+        mode: all
+        timeOffset: '-15m'
+    - name: s-96
+      templateType: Suspend
+      deadline: 10m
+    - name: time-tikv-all-n5
+      templateType: TimeChaos
+      deadline: 60s
+      timeChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+        mode: all
+        timeOffset: '-5m'
+    - name: s-97
+      templateType: Suspend
+      deadline: 10m
+    - name: time-tikv-all-p5
+      templateType: TimeChaos
+      deadline: 60s
+      timeChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+        mode: all
+        timeOffset: '5m'
+    - name: s-98
+      templateType: Suspend
+      deadline: 10m
+    - name: time-tikv-all-p15
+      templateType: TimeChaos
+      deadline: 60s
+      timeChaos:
+        selector:
+          namespaces:
+            - tidb-cluster
+          labelSelectors:
+            app.kubernetes.io/component: tikv
+        mode: all
+        timeOffset: '15m'

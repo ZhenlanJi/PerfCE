@@ -124,4 +124,4 @@ kubectl port-forward -n chaos-testing svc/chaos-dashboard 2333 --address 0.0.0.0
 <img src="./../../assets/images/chaos_mesh_login.png" style="zoom:33%;" />
 
 > **Note:** Here we skip the step to create a service account and a cluster role binding. We will present the steps in website [Chaos
-> Engineering](https://zhenlanji.github.io/PerfCE/chaos/).
+> Engineering](/PerfCE/chaos/).
