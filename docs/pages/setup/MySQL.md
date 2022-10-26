@@ -90,6 +90,35 @@ Then add the `retention: 15d` under the `spec:` field.
 
 Readers can also refer to this [GitHub issue](https://github.com/prometheus-operator/prometheus-operator/issues/2666) for more details. To further customize the Prometheus configuration, readers can refer to the [official repo](https://github.com/prometheus/mysqld_exporter).
 
+**Step 5:** Port forward the Prometheus and Grafana service to the local machine. Run the following command to port forward the Prometheus and Grafana service to the local machine:
+
+```bash
+kubectl port-forward -n monitoring svc/grafana 3000 --address 0.0.0.0
+kubectl port-forward -n monitoring svc/prometheus-k8s 9090 --address 0.0.0.0
+```
+Then, you can access the Grafana dashboard via `http://localhost:3000` and the Prometheus dashboard via `http://localhost:9090`.
+
+**Step 6:** Setup the MySQL exporter. We have provided the configuration file [mysql-exporter.yml](https://github.com/ZhenlanJi/PerfCE/blob/main/config_files/setup/mysql/mysql-exporter.yml). Run the following command to create the MySQL exporter:
+
+```bash
+kubectl apply -f mysql-exporter.yml
+```
+
+Readers can refer to the [official repo](https://github.com/prometheus/mysqld_exporter) for more details.
+
+To check whether the MySQL exporter is running, run the following command:
+
+```bash
+kubectl get svc
+```
+Besides, you can also visit `http://localhost:9090/targets` to check whether the MySQL exporter is running. You should see the following result:
+<img src="./../../assets/images/mysql_exporter.png" style="zoom:33%;" />
+
+> **Note** that it may take a few minutes for the MySQL exporter to be ready. 
+
+**Step 7:** (Optional) Import the Grafana dashboard. 
+
+To visualize the metrics, readers can import the Grafana dashboard from [here](https://grafana.com/grafana/dashboards/7362-mysql-overview/).
 ## Run benchmark on MySQL
 
 We use [TPC-C](https://www.tpc.org/tpcc/) to simulate the workload of a real-world OLTP database.

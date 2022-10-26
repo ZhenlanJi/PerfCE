@@ -7,3 +7,5 @@ nav_order: 4
 ---
 
 # Utilities
+
+This section introduces the usage of our codebase utilities.
