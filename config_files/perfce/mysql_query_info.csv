@@ -1,0 +1,86 @@
+name,metric
+Current QPS,None
+MySQL Connections__Connections,None
+MySQL Connections__Max Used Connections,None
+MySQL Connections__Max Connections,None
+MySQL Client Thread Activity__Peak Threads Connected,None
+MySQL Client Thread Activity__Peak Threads Running,None
+MySQL Client Thread Activity__Avg Threads Running,None
+MySQL Questions,None
+MySQL Thread Cache__Thread Cache Size,None
+MySQL Thread Cache__Threads Cached,None
+MySQL Thread Cache__Threads Created,None
+MySQL Temporary Objects__Created Tmp Tables,None
+MySQL Temporary Objects__Created Tmp Disk Tables,None
+MySQL Temporary Objects__Created Tmp Files,None
+MySQL Select Types__Select Full Join,None
+MySQL Select Types__Select Full Range Join,None
+MySQL Select Types__Select Range,None
+MySQL Select Types__Select Range Check,None
+MySQL Select Types__Select Scan,None
+MySQL Sorts__Sort Rows,None
+MySQL Sorts__Sort Range,None
+MySQL Sorts__Sort Merge Passes,None
+MySQL Sorts__Sort Scan,None
+MySQL Slow Queries,None
+MySQL Aborted Connections__attempts,None
+MySQL Aborted Connections__timeout,None
+MySQL Table Locks__immediate,None
+MySQL Table Locks__waited,None
+MySQL Network Traffic__Inbound,None
+MySQL Network Traffic__Outbound,None
+MySQL Network Usage Hourly__Received,None
+MySQL Network Usage Hourly__Sent,None
+MySQL Internal Memory Overview__InnoDB Buffer Pool Data,None
+MySQL Internal Memory Overview__InnoDB Log Buffer Size,None
+MySQL Internal Memory Overview__InnoDB Additional Memory Pool Size,None
+MySQL Internal Memory Overview__InnoDB Dictionary Size,None
+MySQL Internal Memory Overview__Key Buffer Size,None
+MySQL Internal Memory Overview__Query Cache Size,None
+MySQL Internal Memory Overview__Adaptive Hash Index Size,None
+MySQL Internal Memory Overview__TokuDB Cache Size,None
+Top Command Counters,command
+MySQL Handlers,handler
+MySQL Transaction Handlers,handler
+MySQL Query Cache Memory__Free Memory,None
+MySQL Query Cache Memory__Query Cache Size,None
+MySQL Query Cache Activity__Hits,None
+MySQL Query Cache Activity__Inserts,None
+MySQL Query Cache Activity__Not Cached,None
+MySQL Query Cache Activity__Prunes,None
+MySQL Query Cache Activity__Queries in Cache,None
+MySQL File Openings,None
+MySQL Open Files__Open Files,None
+MySQL Open Files__Open Files Limit,None
+MySQL Open Files__InnoDB Open Files,None
+MySQL Table Open Cache Status__Openings,None
+MySQL Table Open Cache Status__Hits,None
+MySQL Table Open Cache Status__Misses,None
+MySQL Table Open Cache Status__Misses due to Overflows,None
+MySQL Table Open Cache Status__Table Open Cache Hit Ratio,None
+MySQL Open Tables__Open Tables,None
+MySQL Open Tables__Table Open Cache,None
+MySQL Table Definition Cache__Open Table Definitions,None
+MySQL Table Definition Cache__Table Definitions Cache Size,None
+MySQL Table Definition Cache__Opened Table Definitions,None
+MySQL Query Duration,None
+Pod User CPU Usage,None
+Pod System CPU Usage,None
+Pod Memory Usage,None
+Pod Memory Failures,None
+Pod Disk Writes,None
+Pod Disk Reads,None
+Pod Network Received,None
+Pod Network Transmitted,None
+System IO Activity__Page In,None
+System IO Activity__Page Out,None
+System Memory Distribution__Free,None
+System Memory Distribution__Total,None
+System CPU Usage Load,mode
+System CPU Usage Load__Max Core Utilization,None
+System CPU Usage Load__Load 1m,None
+System Network Traffic__Inbound,None
+System Network Traffic__Outbound,None
+System Swap Activity__Swap In Reads,None
+System Swap Activity__Swap Out Writes,None
+System Disk Latency,None

@@ -1,0 +1,85 @@
+rate(mysql_global_status_queries{instance="$host"}[$interval]) or irate(mysql_global_status_queries{instance="$host"}[5m])
+max(max_over_time(mysql_global_status_threads_connected{instance="$host"}[$interval])  or mysql_global_status_threads_connected{instance="$host"} )
+mysql_global_status_max_used_connections{instance="$host"}
+mysql_global_variables_max_connections{instance="$host"}
+max_over_time(mysql_global_status_threads_connected{instance="$host"}[$interval]) or max_over_time(mysql_global_status_threads_connected{instance="$host"}[5m])
+max_over_time(mysql_global_status_threads_running{instance="$host"}[$interval]) or max_over_time(mysql_global_status_threads_running{instance="$host"}[5m])
+avg_over_time(mysql_global_status_threads_running{instance="$host"}[$interval]) or avg_over_time(mysql_global_status_threads_running{instance="$host"}[5m])
+rate(mysql_global_status_questions{instance="$host"}[$interval]) or irate(mysql_global_status_questions{instance="$host"}[5m])
+mysql_global_variables_thread_cache_size{instance="$host"}
+mysql_global_status_threads_cached{instance="$host"}
+rate(mysql_global_status_threads_created{instance="$host"}[$interval]) or irate(mysql_global_status_threads_created{instance="$host"}[5m])
+rate(mysql_global_status_created_tmp_tables{instance="$host"}[$interval]) or irate(mysql_global_status_created_tmp_tables{instance="$host"}[5m])
+rate(mysql_global_status_created_tmp_disk_tables{instance="$host"}[$interval]) or irate(mysql_global_status_created_tmp_disk_tables{instance="$host"}[5m])
+rate(mysql_global_status_created_tmp_files{instance="$host"}[$interval]) or irate(mysql_global_status_created_tmp_files{instance="$host"}[5m])
+rate(mysql_global_status_select_full_join{instance="$host"}[$interval]) or irate(mysql_global_status_select_full_join{instance="$host"}[5m])
+rate(mysql_global_status_select_full_range_join{instance="$host"}[$interval]) or irate(mysql_global_status_select_full_range_join{instance="$host"}[5m])
+rate(mysql_global_status_select_range{instance="$host"}[$interval]) or irate(mysql_global_status_select_range{instance="$host"}[5m])
+rate(mysql_global_status_select_range_check{instance="$host"}[$interval]) or irate(mysql_global_status_select_range_check{instance="$host"}[5m])
+rate(mysql_global_status_select_scan{instance="$host"}[$interval]) or irate(mysql_global_status_select_scan{instance="$host"}[5m])
+rate(mysql_global_status_sort_rows{instance="$host"}[$interval]) or irate(mysql_global_status_sort_rows{instance="$host"}[5m])
+rate(mysql_global_status_sort_range{instance="$host"}[$interval]) or irate(mysql_global_status_sort_range{instance="$host"}[5m])
+rate(mysql_global_status_sort_merge_passes{instance="$host"}[$interval]) or irate(mysql_global_status_sort_merge_passes{instance="$host"}[5m])
+rate(mysql_global_status_sort_scan{instance="$host"}[$interval]) or irate(mysql_global_status_sort_scan{instance="$host"}[5m])
+rate(mysql_global_status_slow_queries{instance="$host"}[$interval]) or irate(mysql_global_status_slow_queries{instance="$host"}[5m])
+rate(mysql_global_status_aborted_connects{instance="$host"}[$interval]) or irate(mysql_global_status_aborted_connects{instance="$host"}[5m])
+rate(mysql_global_status_aborted_clients{instance="$host"}[$interval]) or irate(mysql_global_status_aborted_clients{instance="$host"}[5m])
+rate(mysql_global_status_table_locks_immediate{instance="$host"}[$interval]) or irate(mysql_global_status_table_locks_immediate{instance="$host"}[5m])
+rate(mysql_global_status_table_locks_waited{instance="$host"}[$interval]) or irate(mysql_global_status_table_locks_waited{instance="$host"}[5m])
+rate(mysql_global_status_bytes_received{instance="$host"}[$interval]) or irate(mysql_global_status_bytes_received{instance="$host"}[5m])
+rate(mysql_global_status_bytes_sent{instance="$host"}[$interval]) or irate(mysql_global_status_bytes_sent{instance="$host"}[5m])
+increase(mysql_global_status_bytes_received{instance="$host"}[1h])
+increase(mysql_global_status_bytes_sent{instance="$host"}[1h])
+mysql_global_status_innodb_page_size{instance="$host"} * on (instance) mysql_global_status_buffer_pool_pages{instance="$host",state="data"}
+mysql_global_variables_innodb_log_buffer_size{instance="$host"}
+mysql_global_variables_innodb_additional_mem_pool_size{instance="$host"}
+mysql_global_status_innodb_mem_dictionary{instance="$host"}
+mysql_global_variables_key_buffer_size{instance="$host"}
+mysql_global_variables_query_cache_size{instance="$host"}
+mysql_global_status_innodb_mem_adaptive_hash{instance="$host"}
+mysql_global_variables_tokudb_cache_size{instance="$host"}
+topk(5, rate(mysql_global_status_commands_total{instance="$host"}[$interval])>0) or topk(5, irate(mysql_global_status_commands_total{instance="$host"}[5m])>0)
+rate(mysql_global_status_handlers_total{instance="$host", handler!~"commit|rollback|savepoint.*|prepare"}[$interval]) or irate(mysql_global_status_handlers_total{instance="$host", handler!~"commit|rollback|savepoint.*|prepare"}[5m])
+rate(mysql_global_status_handlers_total{instance="$host", handler=~"commit|rollback|savepoint.*|prepare"}[$interval]) or irate(mysql_global_status_handlers_total{instance="$host", handler=~"commit|rollback|savepoint.*|prepare"}[5m])
+mysql_global_status_qcache_free_memory{instance="$host"}
+mysql_global_variables_query_cache_size{instance="$host"}
+rate(mysql_global_status_qcache_hits{instance="$host"}[$interval]) or irate(mysql_global_status_qcache_hits{instance="$host"}[5m])
+rate(mysql_global_status_qcache_inserts{instance="$host"}[$interval]) or irate(mysql_global_status_qcache_inserts{instance="$host"}[5m])
+rate(mysql_global_status_qcache_not_cached{instance="$host"}[$interval]) or irate(mysql_global_status_qcache_not_cached{instance="$host"}[5m])
+rate(mysql_global_status_qcache_lowmem_prunes{instance="$host"}[$interval]) or irate(mysql_global_status_qcache_lowmem_prunes{instance="$host"}[5m])
+mysql_global_status_qcache_queries_in_cache{instance="$host"}
+rate(mysql_global_status_opened_files{instance="$host"}[$interval]) or irate(mysql_global_status_opened_files{instance="$host"}[5m])
+mysql_global_status_open_files{instance="$host"}
+mysql_global_variables_open_files_limit{instance="$host"}
+mysql_global_status_innodb_num_open_files{instance="$host"}
+rate(mysql_global_status_opened_tables{instance="$host"}[$interval]) or irate(mysql_global_status_opened_tables{instance="$host"}[5m])
+rate(mysql_global_status_table_open_cache_hits{instance="$host"}[$interval]) or irate(mysql_global_status_table_open_cache_hits{instance="$host"}[5m])
+rate(mysql_global_status_table_open_cache_misses{instance="$host"}[$interval]) or irate(mysql_global_status_table_open_cache_misses{instance="$host"}[5m])
+rate(mysql_global_status_table_open_cache_overflows{instance="$host"}[$interval]) or irate(mysql_global_status_table_open_cache_overflows{instance="$host"}[5m])
+(rate(mysql_global_status_table_open_cache_hits{instance="$host"}[$interval]) or irate(mysql_global_status_table_open_cache_hits{instance="$host"}[5m]))/((rate(mysql_global_status_table_open_cache_hits{instance="$host"}[$interval]) or irate(mysql_global_status_table_open_cache_hits{instance="$host"}[5m]))+(rate(mysql_global_status_table_open_cache_misses{instance="$host"}[$interval]) or irate(mysql_global_status_table_open_cache_misses{instance="$host"}[5m])))
+mysql_global_status_open_tables{instance="$host"}
+mysql_global_variables_table_open_cache{instance="$host"}
+mysql_global_status_open_table_definitions{instance="$host"}
+mysql_global_variables_table_definition_cache{instance="$host"}
+rate(mysql_global_status_opened_table_definitions{instance="$host"}[$interval]) or irate(mysql_global_status_opened_table_definitions{instance="$host"}[5m])
+rate(mysql_perf_schema_events_statements_sum_timer_wait[$interval])
+sum(rate(container_cpu_user_seconds_total{pod=~"mysql-.*"}[$interval]))
+sum(rate(container_cpu_system_seconds_total{pod=~"mysql-.*"}[$interval]))
+sum(container_memory_working_set_bytes{pod=~"mysql-.*"})
+sum(rate(container_memory_failures_total {pod=~"mysql-.*"}[$interval]))
+sum(rate(container_fs_writes_bytes_total{pod=~"mysql-.*"}[$interval]))
+sum(rate(container_fs_reads_bytes_total{pod=~"mysql-.*"}[$interval]))
+sum(rate(container_network_receive_bytes_total{pod=~"mysql-.*"}[$interval]))
+sum(rate(container_network_transmit_bytes_total{pod=~"mysql-.*"}[$interval]))
+rate(node_vmstat_pgpgin{instance="mysql-worker"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{instance="mysql-worker"}[5m]) * 1024
+rate(node_vmstat_pgpgout{instance="mysql-worker"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{instance="mysql-worker"}[5m]) * 1024
+node_memory_MemFree_bytes{instance="mysql-worker"}
+node_memory_MemTotal_bytes{instance="mysql-worker"}
+clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{instance="mysql-worker",mode!="idle"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{instance="mysql-worker",mode!="idle"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_seconds_total_average{instance=~"mysql-worker", mode!="total", mode!="idle"}[$interval]) or avg_over_time(node_cpu_seconds_total_average{instance=~"mysql-worker", mode!="total", mode!="idle"}[5m]))),100)
+clamp_max(max by () (sum  by (cpu) ( (clamp_max(rate(node_cpu_seconds_total{instance="mysql-worker",mode!="idle",mode!="iowait"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{instance="mysql-worker",mode!="idle",mode!="iowait"}[5m]),1)) ))*100,100)
+node_load1{instance="mysql-worker"}
+sum(rate(node_network_receive_bytes_total{instance="mysql-worker", device!="lo"}[$interval])) or sum(irate(node_network_receive_bytes_total{instance="mysql-worker", device!="lo"}[5m])) or sum(max_over_time(rdsosmetrics_network_rx{instance="mysql-worker"}[$interval])) or sum(max_over_time(rdsosmetrics_network_rx{instance="mysql-worker"}[5m])) 
+sum(rate(node_network_transmit_bytes_total{instance="mysql-worker", device!="lo"}[$interval])) or sum(irate(node_network_transmit_bytes_total{instance="mysql-worker", device!="lo"}[5m])) or sum(max_over_time(rdsosmetrics_network_tx{instance="mysql-worker"}[$interval])) or sum(max_over_time(rdsosmetrics_network_tx{instance="mysql-worker"}[5m]))
+rate(node_vmstat_pswpin{instance="mysql-worker"}[$interval]) * 4096 or irate(node_vmstat_pswpin{instance="mysql-worker"}[5m]) * 4096
+rate(node_vmstat_pswpout{instance="mysql-worker"}[$interval]) * 4096 or irate(node_vmstat_pswpout{instance="mysql-worker"}[5m]) * 4096
+sum(rate(node_disk_io_time_seconds_total{job="node-exporter", device!~"dm-.+", instance='mysql-worker'}[$interval]))

@@ -1,0 +1,57 @@
+name,metric
+completed cmds duration seconds 99,grpc_method
+Handle requests duration seconds 98,type
+Handle requests duration seconds average,type
+Region health,type
+Hot write Regions leader distribution,store
+Hot read Regions leader distribution,store
+Region heartbeat report,store
+Region heartbeat latency 99,store
+Statement OPS,type
+Duration 999,None
+Duration 99,None
+Duration 95,None
+Duration 80,None
+CPS By Instance,type+result
+Failed Query OPM,type
+Connection Count total,None
+Memory Usage process,None
+Memory Usage HeapInuse,None
+Transaction OPS,type
+Transaction Duration 99,None
+Transaction Duration 95,None
+Transaction Duration 80,None
+KV Cmd OPS,type
+KV Cmd Duration 99,type
+PD TSO OPS cmd,None
+PD TSO OPS request,None
+PD TSO Wait Duration 999,None
+PD TSO Wait Duration 99,None
+PD TSO Wait Duration 90,None
+TiClient Region Error OPS,type
+Lock Resolve OPS,type
+Load Schema Duration,None
+KV Backoff OPS,type
+leader,instance
+region,instance
+CPU,instance
+Memory,instance
+store size,instance
+cf size,type
+scheduler pending commands,instance
+coprocessor executor count,type
+coprocessor request duration 99,req
+coprocessor request duration 95,req
+coprocessor request select duration average,None
+coprocessor request index duration average,None
+raft store CPU,instance
+Storage capacity,None
+Number of Regions,None
+Normal stores,None
+Disconnect Stores,None
+Unhealth Stores,None
+LowSpace Stores,None
+Down Stores,None
+Offline Stores,None
+Tombstone Stores,None
+server report failures
