@@ -133,7 +133,7 @@ def main(args):
 
 if __name__ == "__main__":
     # Parse arguments
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description='Collect data')
     parser.add_argument("--database", type=str, choices=['mysql', 'tidb'],
                         default='mysql', help="select the object database")
     parser.add_argument("--start_time", type=int,
