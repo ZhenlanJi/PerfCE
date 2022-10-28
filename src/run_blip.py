@@ -93,7 +93,7 @@ if __name__ == "__main__":
     start_time = datetime.now()
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--dataset", "-d", type=str, default="blip.csv")
+    parser.add_argument("--input_file", "-d", type=str, default="blip.csv")
     parser.add_argument("--est_out", "-e", type=str, default="blip_est.txt")
     parser.add_argument("--tmp_out", "-t", type=str, default="tmp_data")
     args = parser.parse_args()
@@ -107,6 +107,5 @@ if __name__ == "__main__":
 
     # print("original :")
     # print(skl)
-    print("Done!")
     end_time = datetime.now()
-    print('Duration: {}'.format(end_time - start_time))
+    print('Done! Duration: {}'.format(end_time - start_time))
