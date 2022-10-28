@@ -82,7 +82,6 @@ def combine_data(out_dir, drop_list):
     return combined_df
 
 
-
 def main(args):
     # Set up the Prometheus connection
     prom = PrometheusConnect(
@@ -116,6 +115,8 @@ def main(args):
     collect_raw_data(query_list, query_info_df, start_time,
                      args.duration, prom, args.out_dir)
     combined_df = combine_data(args.out_dir, drop_list)
+    combined_df.to_csv(os.path.join(
+        args.output_file_dir, 'combined.csv'), index=False)
 
     temp_df = combined_df.copy()
     temp_df.drop(['timestamp'], axis=1, inplace=True)
@@ -128,7 +129,7 @@ def main(args):
         kmeans.fit(temp_df[col].to_numpy().reshape(-1, 1))
         blip_df[col] = kmeans.labels_
 
-    blip_df.to_csv(args.output_file, index=False)
+    blip_df.to_csv(os.path.join(args.output_file_dir, 'blip.csv'), index=False)
 
 
 if __name__ == "__main__":
@@ -151,8 +152,8 @@ if __name__ == "__main__":
                         help="(Optional) Path to dropped table list file (should be txt file)")
     parser.add_argument("--raw_data_output", type=str,
                         help="Path to output directory of raw data")
-    parser.add_argument("--output_file", type=str,
-                        help="Path of output file (should be csv file)")
+    parser.add_argument("--output_file_dir", type=str,
+                        help="Path to the dir of output file")
     args = parser.parse_args()
 
     main(args)
