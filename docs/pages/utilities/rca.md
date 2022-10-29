@@ -17,15 +17,15 @@ script to parse the workflow config file.
 **Usage:**
 
 ```bash
-python test.py [-h] [--causal_graph CAUSAL_GRAPH] 
-               [--train_data TRAIN_DATA] 
-               [--test_data TEST_DATA] 
-               [--model_dir MODEL_DIR] 
-               [--normal_start NORMAL_START]
-               [--normal_end NORMAL_END] 
-               [--abnormal_time ABNORMAL_TIME] 
-               [--selected_node SELECTED_NODE] 
-               [--method {PerfCE,cause_infer}]
+python rca.py [-h] [--causal_graph CAUSAL_GRAPH] 
+              [--train_data TRAIN_DATA] 
+              [--test_data TEST_DATA] 
+              [--model_dir MODEL_DIR] 
+              [--normal_start NORMAL_START]
+              [--normal_end NORMAL_END] 
+              [--abnormal_time ABNORMAL_TIME] 
+              [--selected_node SELECTED_NODE] 
+              [--method {PerfCE,cause_infer}]
 ```
 
 Here is the arguments table for the script:
