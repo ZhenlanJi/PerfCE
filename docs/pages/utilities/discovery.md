@@ -8,7 +8,7 @@ nav_order: 3
 # Causal Discovery
 
 In our experiments, we use **BLIP** to learn the causal graph from collected data. To execute BLIP, 
-you need clone the [BLIP repo](https://github.com/mauro-idsia/blip) and install the dependencies. 
+you need to clone the [BLIP repo](https://github.com/mauro-idsia/blip) and install the dependencies. 
 You can find the code for running BLIP in [run_blip.py](https://github.com/ZhenlanJi/PerfCE/blob/main/src/run_blip.py).
 Please put this script in the root directory of BLIP repo, then you can directly execute the script to run BLIP.
 
