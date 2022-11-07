@@ -10,5 +10,6 @@ nav_order: 5
 
 Performance on RF Model
 
-<img src="./../assets/images/n_estimators.jpg" style="zoom:33%;" />
+<img src="./../assets/images/n_estimators.jpg" style="zoom:100%;" />
+<img src="./../assets/images/dep.jpg" style="zoom:100%;" />
 
