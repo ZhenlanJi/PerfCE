@@ -44,8 +44,9 @@ econml
 ## Human evaluation
 
 We use human evaluation to compare PerfCE and several sota methods. 
-Details of human evaluation is presented in `Root Cause Analysis on MySQL(1-7).xlsx`
-
+<!-- Details of human evaluation is presented in `Root Cause Analysis on MySQL(1-7).xlsx` -->
+Questionnaire is presented in `./questionnaire.pdf`.
+Participants' answers are presented in `./answers.pdf`.
 ## Causal graph
 
 We present the causal graph learned by PerfCE in `./causal_graph`.

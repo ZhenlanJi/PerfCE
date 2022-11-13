@@ -3,13 +3,9 @@ layout: page
 title: Supplementary Result
 permalink: /Supplement/
 nav_order: 5
+has_children: true
 ---
 # Supplementary Experiment Result
 
-## Impact of Machine Learning Parameters 
-
-Performance on RF Model
-
-<img src="./../assets/images/n_estimators.jpg" style="zoom:100%;" />
-<img src="./../assets/images/dep.jpg" style="zoom:100%;" />
+This section present the supplementary experiment result of PerfCE.
 
