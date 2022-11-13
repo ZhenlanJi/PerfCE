@@ -17,13 +17,13 @@ Performance Debugging on Databases with Chaos Engineering-Enhanced Causality Ana
   * k8s Cluster Setup
   * TiDB Setup
   * MySQL Setup
-* Chaos Engineering (CE)
-  * Chaos Mesh
-  * Other Chaos Engineering Tools
+* Chaos Engineering
 * Utilities
+  * Collect Data
+  * Parse Chaos
   * Causal Discovery
-  * Causal Analysis
-    * Causal Identification-Estimation
-    * Counterfactual Query
+  * Causal Estimation
+  * Root Cause Analysis
 * Supplementary Experiment Result
-  * Synthetic Data
+  * Modeling KPIs
+  * Impact of Machine Learning Parameters
