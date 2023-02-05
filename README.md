@@ -1,11 +1,13 @@
 # PerfCE
 
-[![Documentation](https://badgen.net/badge/color/latest/blue?label=Documentation)](https://zhenlanji.github.io/PerfCE/)
+[![Docs](https://badgen.net/badge/color/latest/blue?label=Documentation)](https://zhenlanji.github.io/PerfCE/)
 
 This repository belongs to our submitted manuscript:
 > PerfCE: Performance Debugging on Databases with Chaos Engineering-Enhanced Causality Analysis
 
 You can find the code for our paper in this repository.
+
+**Documentation**: Please see this webpage: https://zhenlanji.github.io/PerfCE/
 
 ## Introduction
 
